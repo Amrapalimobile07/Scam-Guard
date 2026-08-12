@@ -80,9 +80,6 @@ out.textContent = "⏳ Database में checking...";
 try{
 const url =
 base +
-"/rest/v1/scam_reports?select=*&app_name=ilike.*" +
-encodeURIComponent(q) +
-"*";
 "/rest/v1/scam_reports?select=*&or=(" +
 "app_name.ilike.*" + encodeURIComponent(q) + "*," +
 "website_url.ilike.*" + encodeURIComponent(q) + "*," +
