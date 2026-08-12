@@ -3,10 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111827">
-<link rel="manifest" href="manifest.json">
 <title>Scam Guard</title>
-
 <style>
 body{margin:0;font-family:Arial;background:#f5f7fb;color:#111827}
 .wrap{max-width:700px;margin:auto;padding:18px}
@@ -23,17 +20,14 @@ button{padding:13px 18px;border:0;border-radius:10px;background:white;color:#111
 </head>
 
 <body>
-
 <div class="wrap">
 
 <div class="hero">
 <div style="font-size:35px">🛡️</div>
 <h1>Scam Guard</h1>
-
 <p>पैसे भेजने से पहले App, Website या UPI check करें।</p>
 
 <input id="q" placeholder="App / Website / UPI ID">
-
 <button onclick="check()">🔍 Check Scam</button>
 
 <div id="result" class="result"></div>
@@ -42,9 +36,7 @@ button{padding:13px 18px;border:0;border-radius:10px;background:white;color:#111
 <div class="card">
 <h2>📢 Report a Scam</h2>
 <p>अगर आपको कोई suspicious App, Website या payment मिला है, तो report करें।</p>
-<button onclick="location.href='report.html'">
-Report Scam
-</button>
+<button onclick="location.href='report.html'">Report Scam</button>
 </div>
 
 <div class="card">
@@ -57,89 +49,10 @@ Report Scam
 <script>
 
 const base = "https://zdsvmqtfzprlfsggdepd.supabase.co";
-
 const key = "sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
-
 const out = document.getElementById("result");
 
 async function check(){
-
-const q = document.getElementById("q").value.trim();
-out.style.display = "block";
-
-if(!q){
-  out.className = "result yellow";
-  out.textContent = "⚠️ App / Website / UPI ID डालें।";
-  return;
-}
-
-out.className = "result yellow";
-out.textContent = "⏳ Database में checking...";
-
-try{
-
-  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-
-  const filters = words.flatMap(word => [
-    "app_name.ilike.*" + encodeURIComponent(word) + "*",
-    "website_url.ilike.*" + encodeURIComponent(word) + "*",
-    "upi_id.ilike.*" + encodeURIComponent(word) + "*"
-  ]);
-
-  const url =
-    base +
-    "/rest/v1/scam_reports?select=*&or=(" +
-    filters.join(",") +
-    ")";
-
-  const response = await fetch(url,{
-    method:"GET",
-    headers:{
-      "apikey":key,
-      "Authorization":"Bearer " + key
-    }
-  });
-
-  const data = await response.json();
-
-  if(!response.ok){
-    throw new Error(JSON.stringify(data));
-  }
-
-  if(data.length === 0){
-    out.className = "result green";
-    out.textContent = "🟢 No Report Found";
-    return;
-  }
-
-  const verified = data.some(
-    x => String(x.status).toLowerCase() === "verified"
-  );
-
-  out.className = "result " + (verified ? "red" : "yellow");
-
-  out.innerHTML =
-    "<b>" +
-    (verified
-      ? "🔴 VERIFIED SCAM REPORT"
-      : "🟡 UNVERIFIED REPORT") +
-    "</b><br><br>" +
-
-    data.map(x =>
-      "<b>" + (x.app_name || "") + "</b><br>" +
-      (x.scam_type || "") +
-      (x.amount ? "<br>Amount: ₹" + x.amount : "") +
-      (x.description ? "<br>" + x.description : "")
-    ).join("<hr>");
-
-}catch(error){
-
-out.className = "result red";
-out.textContent = "❌ Error: " + error.message;
-
-}
-
-    }
 
 const q = document.getElementById("q").value.trim();
 
@@ -155,33 +68,22 @@ out.className = "result yellow";
 out.textContent = "⏳ Database में checking...";
 
 try{
-const url =const words = q.toLowerCase().split(/\s+/).filter(Boolean);
 
-const filters = words.flatMap(word => [
-  "app_name.ilike.*" + encodeURIComponent(word) + "*",
-  "website_url.ilike.*" + encodeURIComponent(word) + "*",
-  "upi_id.ilike.*" + encodeURIComponent(word) + "*"
-]);
 const words = q.toLowerCase().split(/\s+/).filter(Boolean);
 
 const filters = words.flatMap(word => [
-  "app_name.ilike.*" + encodeURIComponent(word) + "*",
-  "website_url.ilike.*" + encodeURIComponent(word) + "*",
-  "upi_id.ilike.*" + encodeURIComponent(word) + "*"
-]);
-const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-
-const filters = words.flatMap(word => [
-  "app_name.ilike.*" + encodeURIComponent(word) + "*",
-  "website_url.ilike.*" + encodeURIComponent(word) + "*",
-  "upi_id.ilike.*" + encodeURIComponent(word) + "*"
+"app_name.ilike.*" + encodeURIComponent(word) + "*",
+"website_url.ilike.*" + encodeURIComponent(word) + "*",
+"upi_id.ilike.*" + encodeURIComponent(word) + "*"
 ]);
 
 const url =
-  base +
-  "/rest/v1/scam_reports?select=*&or=(" +
-  filters.join(",") +
-  ")";
+base +
+"/rest/v1/scam_reports?select=*&or=(" +
+filters.join(",") +
+")";
+
+const response = await fetch(url,{
 method:"GET",
 headers:{
 "apikey":key,
@@ -196,14 +98,14 @@ throw new Error(JSON.stringify(data));
 }
 
 if(data.length === 0){
-
 out.className = "result green";
 out.textContent = "🟢 No Report Found";
 return;
-
 }
 
-const verified = data.some(x => x.status === "verified");
+const verified = data.some(
+x => String(x.status).toLowerCase() === "verified"
+);
 
 out.className = "result " + (verified ? "red" : "yellow");
 
@@ -231,6 +133,5 @@ out.textContent = "❌ Error: " + error.message;
 }
 
 </script>
-
 </body>
 </html>
