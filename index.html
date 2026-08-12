@@ -65,6 +65,83 @@ const out = document.getElementById("result");
 async function check(){
 
 const q = document.getElementById("q").value.trim();
+out.style.display = "block";
+
+if(!q){
+  out.className = "result yellow";
+  out.textContent = "⚠️ App / Website / UPI ID डालें।";
+  return;
+}
+
+out.className = "result yellow";
+out.textContent = "⏳ Database में checking...";
+
+try{
+
+  const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+
+  const filters = words.flatMap(word => [
+    "app_name.ilike.*" + encodeURIComponent(word) + "*",
+    "website_url.ilike.*" + encodeURIComponent(word) + "*",
+    "upi_id.ilike.*" + encodeURIComponent(word) + "*"
+  ]);
+
+  const url =
+    base +
+    "/rest/v1/scam_reports?select=*&or=(" +
+    filters.join(",") +
+    ")";
+
+  const response = await fetch(url,{
+    method:"GET",
+    headers:{
+      "apikey":key,
+      "Authorization":"Bearer " + key
+    }
+  });
+
+  const data = await response.json();
+
+  if(!response.ok){
+    throw new Error(JSON.stringify(data));
+  }
+
+  if(data.length === 0){
+    out.className = "result green";
+    out.textContent = "🟢 No Report Found";
+    return;
+  }
+
+  const verified = data.some(
+    x => String(x.status).toLowerCase() === "verified"
+  );
+
+  out.className = "result " + (verified ? "red" : "yellow");
+
+  out.innerHTML =
+    "<b>" +
+    (verified
+      ? "🔴 VERIFIED SCAM REPORT"
+      : "🟡 UNVERIFIED REPORT") +
+    "</b><br><br>" +
+
+    data.map(x =>
+      "<b>" + (x.app_name || "") + "</b><br>" +
+      (x.scam_type || "") +
+      (x.amount ? "<br>Amount: ₹" + x.amount : "") +
+      (x.description ? "<br>" + x.description : "")
+    ).join("<hr>");
+
+}catch(error){
+
+out.className = "result red";
+out.textContent = "❌ Error: " + error.message;
+
+}
+
+    }
+
+const q = document.getElementById("q").value.trim();
 
 out.style.display = "block";
 
