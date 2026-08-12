@@ -92,13 +92,20 @@ const filters = words.flatMap(word => [
   "website_url.ilike.*" + encodeURIComponent(word) + "*",
   "upi_id.ilike.*" + encodeURIComponent(word) + "*"
 ]);
+const words = q.toLowerCase().split(/\s+/).filter(Boolean);
+
+const filters = words.flatMap(word => [
+  "app_name.ilike.*" + encodeURIComponent(word) + "*",
+  "website_url.ilike.*" + encodeURIComponent(word) + "*",
+  "upi_id.ilike.*" + encodeURIComponent(word) + "*"
+]);
+
 const url =
   base +
   "/rest/v1/scam_reports?select=*&or=(" +
   filters.join(",") +
-  ")";  
-
-const response = await fetch(url,{
+  ")";
+ const response = await fetch(url,{
 method:"GET",
 headers:{
 "apikey":key,
