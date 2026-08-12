@@ -105,7 +105,6 @@ const url =
   "/rest/v1/scam_reports?select=*&or=(" +
   filters.join(",") +
   ")";
- const response = await fetch(url,{
 method:"GET",
 headers:{
 "apikey":key,
