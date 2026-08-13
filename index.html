@@ -69,7 +69,7 @@ out.textContent = "⏳ Database में checking...";
 
 try{
 
-const words = q.toLowerCase().split(/\s+/).
+const words = q.toLowerCase().split(/\s+/).filter(Boolean);
 const filters = words.flatMap(word => [
   "app_name.ilike.*" + encodeURIComponent(word) + "*",
   "website_url.ilike.*" + encodeURIComponent(word) + "*",
