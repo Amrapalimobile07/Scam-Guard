@@ -104,7 +104,9 @@ return;
 }
 
 const verified = data.some(
-x => String(x.status).toLowerCase() === "verified"
+  x => ["verified", "verify"].includes(
+    String(x.status || "").trim().toLowerCase()
+  )
 );
 
 out.className = "result " + (verified ? "red" : "yellow");
