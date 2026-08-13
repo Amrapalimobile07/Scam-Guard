@@ -102,8 +102,12 @@ out.className = "result green";
 out.textContent = "🟢 No Report Found";
 return;
 }
-
-const verified = data.some(
+console.log("STATUS FROM DATABASE:", 
+data.map(x => ({
+  app_name: x.app_name,
+  status: x.status
+})));
+  data.some(
   x => ["verified", "verify"].includes(
     String(x.status || "").trim().toLowerCase()
   )
