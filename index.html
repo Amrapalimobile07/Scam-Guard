@@ -69,12 +69,12 @@ out.textContent = "⏳ Database में checking...";
 
 try{
 
-const words = q.toLowerCase().split(/\s+/).filter(Boolean);
-
+const words = q.toLowerCase().split(/\s+/).
 const filters = words.flatMap(word => [
-"app_name.ilike.*" + encodeURIComponent(word) + "*",
-"website_url.ilike.*" + encodeURIComponent(word) + "*",
-"upi_id.ilike.*" + encodeURIComponent(word) + "*"
+  "app_name.ilike.*" + encodeURIComponent(word) + "*",
+  "website_url.ilike.*" + encodeURIComponent(word) + "*",
+  "upi_id.ilike.*" + encodeURIComponent(word) + "*",
+  "scam_type.ilike.*" + encodeURIComponent(word) + "*"
 ]);
 
 const url =
