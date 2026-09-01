@@ -1,49 +1,142 @@
 <!doctype html>
 <html lang="hi">
+
 <head>
+
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111827">
+
+<meta name="viewport"
+content="width=device-width,initial-scale=1">
+
+<meta name="theme-color"
+content="#111827">
+
 <title>Scam Guard</title>
 
 <style>
-body{margin:0;font-family:Arial;background:#f5f7fb;color:#111827}
-.wrap{max-width:700px;margin:auto;padding:18px}
-.hero{background:#111827;color:white;padding:28px 20px;border-radius:20px;text-align:center;margin-top:15px}
-h1{font-size:34px}
-input{width:100%;box-sizing:border-box;padding:14px;border:0;border-radius:10px;margin:12px 0;font-size:16px}
-button{padding:13px 18px;border:0;border-radius:10px;background:white;color:#111827;font-weight:bold;cursor:pointer}
-.result{margin-top:16px;padding:15px;border-radius:12px;display:none}
-.red{background:#ffe0e0}
-.yellow{background:#fff0b8}
-.green{background:#dcf8df}
-.card{background:white;padding:18px;border-radius:15px;margin-top:15px;box-shadow:0 2px 10px #0001}
+
+body{
+margin:0;
+font-family:Arial;
+background:#f5f7fb;
+color:#111827;
+}
+
+.wrap{
+max-width:700px;
+margin:auto;
+padding:18px;
+}
+
+.hero{
+background:#111827;
+color:white;
+padding:28px 20px;
+border-radius:20px;
+text-align:center;
+margin-top:15px;
+}
+
+h1{
+font-size:34px;
+}
+
+input{
+width:100%;
+box-sizing:border-box;
+padding:14px;
+border:0;
+border-radius:10px;
+margin:12px 0;
+font-size:16px;
+}
+
+button{
+padding:13px 18px;
+border:0;
+border-radius:10px;
+background:white;
+color:#111827;
+font-weight:bold;
+cursor:pointer;
+}
+
+.result{
+margin-top:16px;
+padding:15px;
+border-radius:12px;
+display:none;
+}
+
+.red{
+background:#ffe0e0;
+}
+
+.yellow{
+background:#fff0b8;
+}
+
+.green{
+background:#dcf8df;
+}
+
+.card{
+background:white;
+padding:18px;
+border-radius:15px;
+margin-top:15px;
+box-shadow:0 2px 10px #0001;
+}
+
 </style>
+
 </head>
+
 
 <body>
 
 <div class="wrap">
 
+
 <div class="hero">
 
-<div style="font-size:35px">🛡️</div>
+<div style="font-size:35px">
+🛡️
+</div>
 
-<h1>Scam Guard</h1>
+<h1>
+Scam Guard
+</h1>
 
-<p>पैसे भेजने से पहले App, Website या UPI check करें।</p>
+<p>
+पैसे भेजने से पहले App, Website या UPI check करें।
+</p>
 
-<input id="q" placeholder="App / Website / UPI ID">
 
-<button onclick="check()">🔍 Check Scam</button>
+<input
+id="q"
+placeholder="App / Website / UPI ID">
 
-<div id="result" class="result"></div>
+
+<button onclick="check()">
+🔍 Check Scam
+</button>
+
+
+<div
+id="result"
+class="result">
+</div>
 
 </div>
 
+
+
 <div class="card">
 
-<h2>📢 Report a Scam</h2>
+<h2>
+📢 Report a Scam
+</h2>
 
 <p>
 अगर आपको कोई suspicious App, Website या payment मिला है,
@@ -56,9 +149,13 @@ Report Scam
 
 </div>
 
+
+
 <div class="card">
 
-<h2>🛡️ Safety Tips</h2>
+<h2>
+🛡️ Safety Tips
+</h2>
 
 <p>
 OTP, PIN और password किसी को न दें।
@@ -67,32 +164,45 @@ Guaranteed profit के दावों से सावधान रहें�
 
 </div>
 
+
 </div>
+
 
 
 <script>
 
+
 const base =
 "https://zdsvmqtfzprlfsggdepd.supabase.co";
 
+
 const key =
 "sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
+
 
 const out =
 document.getElementById("result");
 
 
+
 async function check(){
 
-const q =
-document.getElementById("q").value.trim();
 
-out.style.display = "block";
+const q =
+document.getElementById("q")
+.value
+.trim();
+
+
+out.style.display =
+"block";
+
 
 
 if(!q){
 
-out.className = "result yellow";
+out.className =
+"result yellow";
 
 out.textContent =
 "⚠️ App / Website / UPI ID डालें।";
@@ -102,10 +212,13 @@ return;
 }
 
 
-out.className = "result yellow";
+
+out.className =
+"result yellow";
 
 out.textContent =
 "⏳ Database में checking...";
+
 
 
 try{
@@ -117,6 +230,7 @@ const words =
 q.toLowerCase()
 .split(/\s+/)
 .filter(Boolean);
+
 
 
 /* Search fields */
@@ -143,6 +257,7 @@ encodeURIComponent(word) +
 ]);
 
 
+
 /* Supabase URL */
 
 const url =
@@ -151,6 +266,7 @@ base +
 "&or=(" +
 filters.join(",") +
 ")";
+
 
 
 /* Database request */
@@ -172,10 +288,12 @@ headers:{
 });
 
 
+
 /* Read response */
 
 const data =
 await response.json();
+
 
 
 /* Error */
@@ -189,9 +307,21 @@ JSON.stringify(data)
 }
 
 
-/* No record */
 
-if(data.length === 0){
+/* Remove rejected reports */
+
+const visibleData =
+data.filter(x =>
+String(x.status || "")
+.trim()
+.toLowerCase() !== "rejected"
+);
+
+
+
+/* No visible record */
+
+if(visibleData.length === 0){
 
 out.className =
 "result green";
@@ -204,17 +334,19 @@ return;
 }
 
 
+
 /* Display reports */
 
 out.className =
 "result red";
 
 
+
 out.innerHTML =
-data.map(x => {
+visibleData.map(x => {
 
 
-/* Read status directly */
+/* Read status */
 
 const status =
 String(x.status || "")
@@ -222,11 +354,20 @@ String(x.status || "")
 .toLowerCase();
 
 
+
 /* Verified */
 
 const isVerified =
 status === "verified" ||
 status === "verify";
+
+
+
+/* Unverified */
+
+const isUnverified =
+status === "unverified";
+
 
 
 return (
@@ -238,37 +379,47 @@ return (
 (
 isVerified
 ? "🔴 VERIFIED SCAM REPORT"
-: "🟡 UNVERIFIED REPORT"
+: isUnverified
+? "🟡 UNVERIFIED REPORT"
+: "⚠️ REPORT"
 ) +
 
 "</b><br><br>" +
 
+
 "<b>App:</b> " +
 (x.app_name || "—") +
 
+
 "<br>" +
+
 
 "<b>Scam Type:</b> " +
 (x.scam_type || "—") +
+
 
 (x.amount
 ? "<br><b>Amount:</b> ₹" +
 x.amount
 : "") +
 
+
 (x.description
 ? "<br><b>Description:</b> " +
 x.description
 : "") +
 
+
 "<br><b>Status:</b> " +
 (x.status || "—") +
+
 
 "</div>"
 
 );
 
 }).join("<hr>");
+
 
 
 }catch(error){
@@ -287,7 +438,9 @@ error.message;
 
 }
 
+
 </script>
 
 </body>
+
 </html>
