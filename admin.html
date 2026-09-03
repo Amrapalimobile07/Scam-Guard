@@ -102,6 +102,11 @@ color:#6b7280;
 margin-top:8px;
 }
 
+.denied{
+text-align:center;
+padding:25px;
+}
+
 </style>
 
 </head>
@@ -114,13 +119,12 @@ margin-top:8px;
 
 <!-- LOGIN -->
 
-<div class="card"
-id="loginBox">
+<div class="card" id="loginBox">
 
 <h1>🛡️ Scam Guard Admin</h1>
 
 <p>
-Admin email और password से login करें।
+सिर्फ Admin account से login करें।
 </p>
 
 <input
@@ -164,8 +168,7 @@ onclick="logout()">
 🚪 Logout
 </button>
 
-<div
-id="reports">
+<div id="reports">
 </div>
 
 </div>
@@ -186,7 +189,31 @@ const key =
 "sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
 
 
+/*
+ IMPORTANT:
+ This email check is only for the Admin UI.
+ Real database security is handled by Supabase RLS.
+*/
+
+const ADMIN_EMAIL =
+"amrapalimobile07@gmail.com";
+
+
 let accessToken = "";
+
+
+/* HTML SAFETY */
+
+function safe(value){
+
+return String(value ?? "")
+.replace(/&/g,"&amp;")
+.replace(/</g,"&lt;")
+.replace(/>/g,"&gt;")
+.replace(/"/g,"&quot;")
+.replace(/'/g,"&#039;");
+
+}
 
 
 /* LOGIN */
@@ -277,6 +304,29 @@ data.message ||
 }
 
 
+/*
+ Check Admin email AFTER successful login.
+ This prevents normal users from opening the Admin UI.
+*/
+
+if(
+email.toLowerCase() !==
+ADMIN_EMAIL.toLowerCase()
+){
+
+accessToken = "";
+
+result.className =
+"result red";
+
+result.textContent =
+"❌ Access Denied — यह account Admin नहीं है।";
+
+return;
+
+}
+
+
 accessToken =
 data.access_token;
 
@@ -285,7 +335,7 @@ result.className =
 "result green";
 
 result.textContent =
-"✅ Login सफल हुआ।";
+"✅ Admin login सफल हुआ।";
 
 
 document.getElementById(
@@ -388,53 +438,54 @@ data.map(x => `
 <div class="report">
 
 <b>
-${x.app_name || "No App Name"}
+${safe(x.app_name || "No App Name")}
 </b>
 
 <br><br>
 
 ⚠️
-${x.scam_type || "No scam type"}
+${safe(x.scam_type || "No scam type")}
 
 <br>
 
 💰
-${x.amount ? "₹"+x.amount :
-"Amount नहीं दिया"}
+${x.amount
+? "₹" + safe(x.amount)
+: "Amount नहीं दिया"}
 
 <br>
 
 🌐
-${x.website_url ||
-"Website नहीं"}
+${safe(x.website_url ||
+"Website नहीं")}
 
 <br>
 
 💳
-${x.upi_id ||
-"UPI नहीं"}
+${safe(x.upi_id ||
+"UPI नहीं")}
 
 <br>
 
 📝
-${x.description || ""}
+${safe(x.description || "")}
 
 <div class="small">
 
 Status:
-${x.status || "unknown"}
+${safe(x.status || "unknown")}
 
 <br>
 
 ID:
-${x.id || "ID नहीं"}
+${safe(x.id || "ID नहीं")}
 
 </div>
 
 
 <button
 class="verify"
-onclick="updateStatus('${x.id}','verified')">
+onclick="updateStatus('${safe(x.id)}','verified')">
 
 ✅ Verify
 
@@ -443,7 +494,7 @@ onclick="updateStatus('${x.id}','verified')">
 
 <button
 class="reject"
-onclick="updateStatus('${x.id}','rejected')">
+onclick="updateStatus('${safe(x.id)}','rejected')">
 
 ❌ Reject
 
@@ -459,7 +510,7 @@ onclick="updateStatus('${x.id}','rejected')">
 
 reports.innerHTML =
 "❌ Error: " +
-error.message;
+safe(error.message);
 
 }
 
@@ -590,6 +641,11 @@ document.getElementById(
 "loginResult"
 ).textContent="";
 
+
+document.getElementById(
+"reports"
+).innerHTML="";
+
 }
 
 
@@ -598,4 +654,3 @@ document.getElementById(
 </body>
 
 </html>
-/admin.html
