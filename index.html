@@ -4,10 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111827">
+
 <title>Scam Guard</title>
 
 <style>
-*{box-sizing:border-box}
+
+*{
+  box-sizing:border-box;
+}
 
 body{
   margin:0;
@@ -100,18 +104,23 @@ button:active{
   border:1px solid #a8dfad;
 }
 
+.risk{
+  background:#b91c1c;
+  color:white;
+  padding:14px;
+  border-radius:12px;
+  text-align:center;
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:15px;
+}
+
 .report{
-  background:#fff;
+  background:white;
+  color:#111827;
   padding:14px;
   border-radius:12px;
   margin-bottom:12px;
-}
-
-.footer{
-  text-align:center;
-  color:#6b7280;
-  padding:25px 10px;
-  font-size:13px;
 }
 
 .tip{
@@ -122,8 +131,17 @@ button:active{
 .tip:last-child{
   border-bottom:0;
 }
+
+.footer{
+  text-align:center;
+  color:#6b7280;
+  padding:25px 10px;
+  font-size:13px;
+}
+
 </style>
 </head>
+
 
 <body>
 
@@ -175,13 +193,21 @@ button:active{
 
     <h2>🛡️ Safety Tips</h2>
 
-    <div class="tip">🔐 OTP, PIN और password किसी को न दें।</div>
+    <div class="tip">
+      🔐 OTP, PIN और password किसी को न दें।
+    </div>
 
-    <div class="tip">💰 Guaranteed profit के दावों से सावधान रहें।</div>
+    <div class="tip">
+      💰 Guaranteed profit के दावों से सावधान रहें।
+    </div>
 
-    <div class="tip">🔎 पैसे भेजने से पहले App / Website / UPI check करें।</div>
+    <div class="tip">
+      🔎 पैसे भेजने से पहले App / Website / UPI check करें।
+    </div>
 
-    <div class="tip">⚠️ Unknown links पर payment न करें।</div>
+    <div class="tip">
+      ⚠️ Unknown links पर payment न करें।
+    </div>
 
   </div>
 
@@ -217,9 +243,6 @@ function safe(value){
 }
 
 
-/*
-  Search text normalization
-*/
 function normalize(value){
 
   return String(value || "")
@@ -230,10 +253,6 @@ function normalize(value){
 }
 
 
-/*
-  Check whether the user's search
-  actually matches a database field.
-*/
 function isRealMatch(report, search){
 
   const q = normalize(search);
@@ -246,31 +265,43 @@ function isRealMatch(report, search){
 
   ].map(normalize);
 
+
   /*
-    Full phrase match first
+    पहले पूरा search phrase check
   */
-  if(fields.some(field => field.includes(q))){
+
+  if(
+    fields.some(field =>
+      field.includes(q)
+    )
+  ){
+
     return true;
+
   }
 
 
   /*
-    For multi-word searches,
-    ALL words must be present somewhere
-    in the same report.
+    अगर multiple words हैं,
+    तो सभी words उसी report में मिलने चाहिए।
   */
-  const words = q
-    .split(" ")
-    .filter(Boolean);
 
-  if(words.length === 1){
+  const words =
+    q.split(" ").filter(Boolean);
+
+
+  if(words.length <= 1){
+
     return false;
+
   }
 
 
   return words.every(word =>
 
-    fields.some(field => field.includes(word))
+    fields.some(field =>
+      field.includes(word)
+    )
 
   );
 
@@ -294,6 +325,7 @@ async function check(){
       "⚠️ App / Website / UPI ID डालें।";
 
     return;
+
   }
 
 
@@ -306,9 +338,7 @@ async function check(){
   try{
 
     /*
-      Database से सभी public reports पढ़ेंगे।
-      बाद में केवल VERIFIED और matching reports
-      दिखाई जाएंगी।
+      Database से reports लेना
     */
 
     const url =
@@ -322,8 +352,12 @@ async function check(){
         method:"GET",
 
         headers:{
+
           "apikey":key,
-          "Authorization":"Bearer " + key
+
+          "Authorization":
+          "Bearer " + key
+
         }
 
       });
@@ -345,55 +379,99 @@ async function check(){
     /*
       केवल VERIFIED reports
     */
+
     const verified =
       data.filter(report => {
 
         const status =
           normalize(report.status);
 
-        return status === "verified" ||
-               status === "verify";
+        return (
+          status === "verified" ||
+          status === "verify"
+        );
 
       });
 
 
     /*
-      केवल actual matching reports
+      केवल matching reports
     */
+
     const matches =
       verified.filter(report =>
+
         isRealMatch(report,q)
+
       );
 
 
     /*
-      कोई matching verified report नहीं
+      कोई verified report नहीं
     */
+
     if(matches.length === 0){
 
       out.className = "result green";
 
-      out.innerHTML =
-        "🟢 <b>No Verified Scam Report Found</b><br><br>" +
-        "इस search के लिए कोई verified scam report नहीं मिली।";
+      out.innerHTML = `
+
+        <b>🟢 NO VERIFIED SCAM REPORT FOUND</b>
+
+        <br><br>
+
+        इस search के लिए कोई verified scam report नहीं मिली।
+
+      `;
 
       return;
+
     }
 
 
     /*
-      Matching verified reports दिखाएँ
+      VERIFIED SCAM मिला
     */
+
     out.className = "result red";
 
 
-    out.innerHTML =
+    /*
+      Risk Level
+    */
+
+    const riskBox = `
+
+      <div class="risk">
+
+        🚨 HIGH RISK
+
+        <br>
+
+        <small>
+          Verified scam report मिली है
+        </small>
+
+      </div>
+
+    `;
+
+
+    /*
+      Reports display
+    */
+
+    const reportsHTML =
+
       matches.map(report => {
 
         return `
+
           <div class="report">
 
-            <b>🔴 VERIFIED SCAM REPORT</b>
+            <b>
+              🔴 VERIFIED SCAM REPORT
+            </b>
 
             <br><br>
 
@@ -407,14 +485,22 @@ async function check(){
 
             ${
               report.amount
-              ? `<br><b>Amount:</b> ₹${safe(report.amount)}`
-              : ""
+              ?
+              `<br>
+               <b>Amount:</b>
+               ₹${safe(report.amount)}`
+              :
+              ""
             }
 
             ${
               report.description
-              ? `<br><b>Description:</b> ${safe(report.description)}`
-              : ""
+              ?
+              `<br>
+               <b>Description:</b>
+               ${safe(report.description)}`
+              :
+              ""
             }
 
             <br>
@@ -423,9 +509,15 @@ async function check(){
             ${safe(report.status || "verified")}
 
           </div>
+
         `;
 
       }).join("");
+
+
+    out.innerHTML =
+      riskBox +
+      reportsHTML;
 
 
   }catch(error){
@@ -433,7 +525,9 @@ async function check(){
     out.className = "result red";
 
     out.innerHTML =
+
       "❌ <b>Error:</b><br>" +
+
       safe(error.message);
 
   }
@@ -442,19 +536,23 @@ async function check(){
 
 
 /*
-  Enter दबाने पर भी search चलेगा
+  Enter दबाने पर search
 */
+
 document
   .getElementById("q")
-  .addEventListener("keydown",function(event){
+  .addEventListener(
+    "keydown",
+    function(event){
 
-    if(event.key === "Enter"){
+      if(event.key === "Enter"){
 
-      check();
+        check();
+
+      }
 
     }
-
-  });
+  );
 
 </script>
 
