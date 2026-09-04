@@ -4,14 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#111827">
-
 <title>Scam Guard</title>
 
 <style>
-
-*{
-  box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
   margin:0;
@@ -35,18 +31,14 @@ body{
   margin-top:15px;
 }
 
-.hero-icon{
-  font-size:45px;
-}
+.hero-icon{font-size:45px}
 
 h1{
   font-size:34px;
   margin:8px 0;
 }
 
-.hero p{
-  color:#d1d5db;
-}
+.hero p{color:#d1d5db}
 
 input{
   width:100%;
@@ -66,10 +58,6 @@ button{
   color:#111827;
   font-weight:bold;
   cursor:pointer;
-}
-
-button:active{
-  transform:scale(.98);
 }
 
 .card{
@@ -123,14 +111,46 @@ button:active{
   margin-bottom:12px;
 }
 
+.stats{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+  margin-top:15px;
+}
+
+.stat{
+  background:#f8fafc;
+  padding:18px 10px;
+  border-radius:12px;
+  text-align:center;
+}
+
+.stat-number{
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:5px;
+}
+
+.stat-title{
+  font-size:13px;
+  color:#6b7280;
+}
+
+.safety{
+  background:#dcf8df;
+  padding:12px;
+  border-radius:10px;
+  text-align:center;
+  font-weight:bold;
+  margin-top:12px;
+}
+
 .tip{
   padding:10px 0;
   border-bottom:1px solid #eee;
 }
 
-.tip:last-child{
-  border-bottom:0;
-}
+.tip:last-child{border-bottom:0}
 
 .footer{
   text-align:center;
@@ -139,13 +159,23 @@ button:active{
   font-size:13px;
 }
 
+@media(max-width:450px){
+  .stats{
+    grid-template-columns:1fr 1fr;
+  }
+
+  h1{
+    font-size:30px;
+  }
+}
 </style>
 </head>
-
 
 <body>
 
 <div class="wrap">
+
+  <!-- HERO -->
 
   <div class="hero">
 
@@ -173,6 +203,57 @@ button:active{
   </div>
 
 
+  <!-- STATISTICS -->
+
+  <div class="card">
+
+    <h2>📊 Scam Guard Statistics</h2>
+
+    <div class="stats">
+
+      <div class="stat">
+
+        <div
+          id="verifiedCount"
+          class="stat-number"
+        >
+          ...
+        </div>
+
+        <div class="stat-title">
+          🔴 Verified Scams
+        </div>
+
+      </div>
+
+
+      <div class="stat">
+
+        <div
+          id="pendingCount"
+          class="stat-number"
+        >
+          ...
+        </div>
+
+        <div class="stat-title">
+          🟡 Pending Reports
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <div class="safety">
+      🛡️ Scam Guard Safety System Active
+    </div>
+
+  </div>
+
+
+  <!-- REPORT -->
+
   <div class="card">
 
     <h2>📢 Report a Scam</h2>
@@ -188,6 +269,8 @@ button:active{
 
   </div>
 
+
+  <!-- SAFETY -->
 
   <div class="card">
 
@@ -230,6 +313,12 @@ const key =
 const out =
 document.getElementById("result");
 
+const verifiedCount =
+document.getElementById("verifiedCount");
+
+const pendingCount =
+document.getElementById("pendingCount");
+
 
 function safe(value){
 
@@ -253,6 +342,10 @@ function normalize(value){
 }
 
 
+/*
+  Search match
+*/
+
 function isRealMatch(report, search){
 
   const q = normalize(search);
@@ -267,7 +360,7 @@ function isRealMatch(report, search){
 
 
   /*
-    पहले पूरा search phrase check
+    पूरा phrase match
   */
 
   if(
@@ -282,8 +375,7 @@ function isRealMatch(report, search){
 
 
   /*
-    अगर multiple words हैं,
-    तो सभी words उसी report में मिलने चाहिए।
+    Multiple words
   */
 
   const words =
@@ -307,6 +399,103 @@ function isRealMatch(report, search){
 
 }
 
+
+/*
+  Load Statistics
+*/
+
+async function loadStatistics(){
+
+  try{
+
+    const url =
+      base +
+      "/rest/v1/scam_reports?select=status";
+
+
+    const response =
+      await fetch(url,{
+
+        method:"GET",
+
+        headers:{
+          "apikey":key,
+          "Authorization":"Bearer " + key
+        }
+
+      });
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        JSON.stringify(data)
+      );
+
+    }
+
+
+    let verified = 0;
+    let pending = 0;
+
+
+    data.forEach(report => {
+
+      const status =
+        normalize(report.status);
+
+
+      if(
+        status === "verified" ||
+        status === "verify"
+      ){
+
+        verified++;
+
+      }
+
+
+      if(status === "unverified"){
+
+        pending++;
+
+      }
+
+    });
+
+
+    verifiedCount.textContent =
+      verified;
+
+    pendingCount.textContent =
+      pending;
+
+
+  }catch(error){
+
+    verifiedCount.textContent =
+      "—";
+
+    pendingCount.textContent =
+      "—";
+
+    console.error(
+      "Statistics Error:",
+      error
+    );
+
+  }
+
+}
+
+
+/*
+  Scam Checker
+*/
 
 async function check(){
 
@@ -337,10 +526,6 @@ async function check(){
 
   try{
 
-    /*
-      Database से reports लेना
-    */
-
     const url =
       base +
       "/rest/v1/scam_reports?select=*";
@@ -356,7 +541,7 @@ async function check(){
           "apikey":key,
 
           "Authorization":
-          "Bearer " + key
+            "Bearer " + key
 
         }
 
@@ -395,32 +580,34 @@ async function check(){
 
 
     /*
-      केवल matching reports
+      Matching reports
     */
 
     const matches =
       verified.filter(report =>
-
         isRealMatch(report,q)
-
       );
 
 
     /*
-      कोई verified report नहीं
+      No verified scam
     */
 
     if(matches.length === 0){
 
-      out.className = "result green";
+      out.className =
+        "result green";
 
       out.innerHTML = `
 
-        <b>🟢 NO VERIFIED SCAM REPORT FOUND</b>
+        <b>
+          🟢 NO VERIFIED SCAM REPORT FOUND
+        </b>
 
         <br><br>
 
-        इस search के लिए कोई verified scam report नहीं मिली।
+        इस search के लिए कोई verified
+        scam report नहीं मिली।
 
       `;
 
@@ -430,15 +617,12 @@ async function check(){
 
 
     /*
-      VERIFIED SCAM मिला
+      HIGH RISK
     */
 
-    out.className = "result red";
+    out.className =
+      "result red";
 
-
-    /*
-      Risk Level
-    */
 
     const riskBox = `
 
@@ -458,7 +642,7 @@ async function check(){
 
 
     /*
-      Reports display
+      Reports
     */
 
     const reportsHTML =
@@ -522,12 +706,11 @@ async function check(){
 
   }catch(error){
 
-    out.className = "result red";
+    out.className =
+      "result red";
 
     out.innerHTML =
-
       "❌ <b>Error:</b><br>" +
-
       safe(error.message);
 
   }
@@ -536,7 +719,7 @@ async function check(){
 
 
 /*
-  Enter दबाने पर search
+  Enter key search
 */
 
 document
@@ -553,6 +736,13 @@ document
 
     }
   );
+
+
+/*
+  Page खुलते ही statistics load
+*/
+
+loadStatistics();
 
 </script>
 
