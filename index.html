@@ -1,655 +1,462 @@
 <!doctype html>
 <html lang="hi">
-
 <head>
-
 <meta charset="utf-8">
-
-<meta name="viewport"
-content="width=device-width,initial-scale=1">
-
-<meta name="theme-color"
-content="#111827">
-
-<meta name="description"
-content="Scam Guard - App, Website और UPI को check करें।">
-
-<title>Scam Guard 🛡️</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111827">
+<title>Scam Guard</title>
 
 <style>
-
-*{
-box-sizing:border-box;
-}
+*{box-sizing:border-box}
 
 body{
-margin:0;
-font-family:Arial,sans-serif;
-background:#f5f7fb;
-color:#111827;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#111827;
 }
 
 .wrap{
-max-width:720px;
-margin:auto;
-padding:16px;
+  max-width:700px;
+  margin:auto;
+  padding:18px;
 }
-
-/* HERO */
 
 .hero{
-background:#111827;
-color:white;
-padding:30px 20px;
-border-radius:24px;
-text-align:center;
-margin-top:10px;
-box-shadow:0 8px 25px #0002;
+  background:#111827;
+  color:white;
+  padding:28px 20px;
+  border-radius:20px;
+  text-align:center;
+  margin-top:15px;
 }
 
-.shield{
-font-size:52px;
-margin-bottom:5px;
+.hero-icon{
+  font-size:45px;
 }
 
 h1{
-font-size:36px;
-margin:5px 0 8px;
+  font-size:34px;
+  margin:8px 0;
 }
 
-.tagline{
-font-size:16px;
-line-height:1.5;
-color:#e5e7eb;
-}
-
-/* SEARCH */
-
-.search-box{
-margin-top:22px;
+.hero p{
+  color:#d1d5db;
 }
 
 input{
-width:100%;
-padding:16px;
-border:2px solid #e5e7eb;
-border-radius:13px;
-font-size:16px;
-outline:none;
+  width:100%;
+  padding:15px;
+  border:0;
+  border-radius:12px;
+  margin:12px 0;
+  font-size:16px;
+  outline:none;
 }
 
-input:focus{
-border-color:#111827;
+button{
+  padding:13px 20px;
+  border:0;
+  border-radius:10px;
+  background:white;
+  color:#111827;
+  font-weight:bold;
+  cursor:pointer;
 }
 
-.check-btn{
-width:100%;
-padding:15px;
-margin-top:10px;
-border:0;
-border-radius:13px;
-background:white;
-color:#111827;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-box-shadow:0 3px 10px #0002;
+button:active{
+  transform:scale(.98);
 }
 
-.check-btn:active{
-transform:scale(.98);
+.card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  margin-top:15px;
+  box-shadow:0 2px 10px #0001;
 }
-
-/* RESULT */
 
 .result{
-margin-top:18px;
-padding:16px;
-border-radius:15px;
-display:none;
-text-align:left;
-line-height:1.6;
+  margin-top:16px;
+  padding:16px;
+  border-radius:12px;
+  display:none;
+  text-align:left;
+  line-height:1.6;
 }
 
 .red{
-background:#ffe0e0;
-border:1px solid #ffb4b4;
+  background:#ffe0e0;
+  border:1px solid #ffb3b3;
 }
 
 .yellow{
-background:#fff0b8;
-border:1px solid #efd46a;
+  background:#fff0b8;
+  border:1px solid #ead27a;
 }
 
 .green{
-background:#dcf8df;
-border:1px solid #9cdda4;
+  background:#dcf8df;
+  border:1px solid #a8dfad;
 }
 
-/* REPORT CARD */
-
-.card{
-background:white;
-padding:20px;
-border-radius:18px;
-margin-top:16px;
-box-shadow:0 4px 15px #0001;
+.report{
+  background:#fff;
+  padding:14px;
+  border-radius:12px;
+  margin-bottom:12px;
 }
 
-.card h2{
-margin-top:0;
-font-size:21px;
+.footer{
+  text-align:center;
+  color:#6b7280;
+  padding:25px 10px;
+  font-size:13px;
 }
-
-.card p{
-line-height:1.6;
-color:#4b5563;
-}
-
-.report-btn{
-width:100%;
-padding:14px;
-border:0;
-border-radius:12px;
-background:#111827;
-color:white;
-font-size:16px;
-font-weight:bold;
-cursor:pointer;
-}
-
-.report-btn:active{
-transform:scale(.98);
-}
-
-/* SAFETY */
 
 .tip{
-display:flex;
-gap:12px;
-padding:12px 0;
-border-bottom:1px solid #eee;
+  padding:10px 0;
+  border-bottom:1px solid #eee;
 }
 
 .tip:last-child{
-border-bottom:0;
+  border-bottom:0;
 }
-
-.tip-icon{
-font-size:23px;
-}
-
-.tip-text{
-line-height:1.5;
-}
-
-/* FOOTER */
-
-.footer{
-text-align:center;
-font-size:13px;
-color:#6b7280;
-padding:22px 5px 10px;
-}
-
-/* MOBILE */
-
-@media(max-width:480px){
-
-.wrap{
-padding:12px;
-}
-
-.hero{
-padding:26px 16px;
-border-radius:20px;
-}
-
-h1{
-font-size:32px;
-}
-
-.shield{
-font-size:48px;
-}
-
-.card{
-padding:17px;
-}
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
 <div class="wrap">
 
+  <div class="hero">
 
-<!-- HERO -->
+    <div class="hero-icon">🛡️</div>
 
-<div class="hero">
+    <h1>Scam Guard</h1>
 
-<div class="shield">
-🛡️
-</div>
+    <p>
+      पैसे भेजने से पहले App, Website या UPI ID check करें।
+    </p>
 
-<h1>
-Scam Guard
-</h1>
+    <input
+      id="q"
+      type="text"
+      placeholder="App / Website / UPI ID"
+      autocomplete="off"
+    >
 
-<div class="tagline">
-पैसे भेजने से पहले<br>
-<strong>App • Website • UPI</strong> check करें।
-</div>
+    <button onclick="check()">
+      🔍 Check Scam
+    </button>
 
+    <div id="result" class="result"></div>
 
-<div class="search-box">
-
-<input
-id="q"
-type="text"
-autocomplete="off"
-placeholder="App / Website / UPI ID"
-aria-label="App Website या UPI ID">
-
-<button
-class="check-btn"
-onclick="check()">
-
-🔍 Check Scam
-
-</button>
-
-</div>
+  </div>
 
 
-<div
-id="result"
-class="result">
-</div>
+  <div class="card">
 
-</div>
+    <h2>📢 Report a Scam</h2>
+
+    <p>
+      अगर आपको कोई suspicious App, Website या payment मिला है,
+      तो उसकी report करें।
+    </p>
+
+    <button onclick="location.href='report.html'">
+      Report Scam
+    </button>
+
+  </div>
 
 
-<!-- REPORT -->
+  <div class="card">
 
-<div class="card">
+    <h2>🛡️ Safety Tips</h2>
 
-<h2>
-📢 Report a Scam
-</h2>
+    <div class="tip">🔐 OTP, PIN और password किसी को न दें।</div>
 
-<p>
-अगर आपको कोई suspicious App, Website,
-UPI या payment मिला है, तो उसकी report करें।
-</p>
+    <div class="tip">💰 Guaranteed profit के दावों से सावधान रहें।</div>
 
-<button
-class="report-btn"
-onclick="location.href='report.html'">
+    <div class="tip">🔎 पैसे भेजने से पहले App / Website / UPI check करें।</div>
 
-🚨 Report Scam
+    <div class="tip">⚠️ Unknown links पर payment न करें।</div>
 
-</button>
+  </div>
+
+
+  <div class="footer">
+    🛡️ Scam Guard — Stay Safe Online
+  </div>
 
 </div>
-
-
-<!-- SAFETY -->
-
-<div class="card">
-
-<h2>
-🛡️ Safety Tips
-</h2>
-
-
-<div class="tip">
-
-<div class="tip-icon">
-🔐
-</div>
-
-<div class="tip-text">
-<strong>OTP/PIN शेयर न करें</strong><br>
-अपना OTP, UPI PIN या password किसी को न दें।
-</div>
-
-</div>
-
-
-<div class="tip">
-
-<div class="tip-icon">
-💰
-</div>
-
-<div class="tip-text">
-<strong>Guaranteed profit से सावधान</strong><br>
-जल्दी और guaranteed पैसे कमाने के दावों पर भरोसा न करें।
-</div>
-
-</div>
-
-
-<div class="tip">
-
-<div class="tip-icon">
-🔎
-</div>
-
-<div class="tip-text">
-<strong>पहले Check करें</strong><br>
-पैसे भेजने से पहले App, Website या UPI को Scam Guard में check करें।
-</div>
-
-</div>
-
-
-<div class="tip">
-
-<div class="tip-icon">
-🚨
-</div>
-
-<div class="tip-text">
-<strong>Suspicious लगे तो Report करें</strong><br>
-दूसरे लोगों को सावधान करने के लिए scam की report करें।
-</div>
-
-</div>
-
-</div>
-
-
-<div class="footer">
-🛡️ Scam Guard — Stay Safe Before You Pay
-</div>
-
-
-</div>
-
 
 
 <script>
 
-
-/* SUPABASE */
-
 const base =
 "https://zdsvmqtfzprlfsggdepd.supabase.co";
 
-
 const key =
 "sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
-
 
 const out =
 document.getElementById("result");
 
 
-/* HTML SAFETY */
-
 function safe(value){
 
-return String(value ?? "")
-.replace(/&/g,"&amp;")
-.replace(/</g,"&lt;")
-.replace(/>/g,"&gt;")
-.replace(/"/g,"&quot;")
-.replace(/'/g,"&#039;");
-
-}
-
-
-/* CHECK SCAM */
-
-async function check(){
-
-
-const q =
-document.getElementById("q")
-.value
-.trim();
-
-
-out.style.display="block";
-
-
-if(!q){
-
-out.className =
-"result yellow";
-
-out.textContent =
-"⚠️ App / Website / UPI ID डालें।";
-
-return;
-
-}
-
-
-out.className =
-"result yellow";
-
-out.textContent =
-"⏳ Database में checking...";
-
-
-try{
-
-
-/* SEARCH WORDS */
-
-const words =
-q.toLowerCase()
-.split(/\s+/)
-.filter(Boolean);
-
-
-/* SEARCH FIELDS */
-
-const filters =
-words.flatMap(word => [
-
-"app_name.ilike.*" +
-encodeURIComponent(word) +
-"*",
-
-"website_url.ilike.*" +
-encodeURIComponent(word) +
-"*",
-
-"upi_id.ilike.*" +
-encodeURIComponent(word) +
-"*",
-
-"scam_type.ilike.*" +
-encodeURIComponent(word) +
-"*"
-
-]);
-
-
-/* SUPABASE REQUEST */
-
-const url =
-base +
-"/rest/v1/scam_reports?select=*" +
-"&or=(" +
-filters.join(",") +
-")";
-
-
-const response =
-await fetch(url,{
-
-method:"GET",
-
-headers:{
-
-"apikey":key,
-
-"Authorization":
-"Bearer " + key
-
-}
-
-});
-
-
-const data =
-await response.json();
-
-
-if(!response.ok){
-
-throw new Error(
-JSON.stringify(data)
-);
+  return String(value ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
 
 }
 
 
 /*
- REMOVE REJECTED REPORTS
+  Search text normalization
 */
+function normalize(value){
 
-const visibleData =
-data.filter(x =>
-String(x.status || "")
-.trim()
-.toLowerCase() !== "rejected"
-);
-
-
-/* NO REPORT */
-
-if(visibleData.length === 0){
-
-out.className =
-"result green";
-
-out.textContent =
-"🟢 No Report Found";
-
-return;
+  return String(value || "")
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g," ");
 
 }
 
 
-/* DISPLAY */
+/*
+  Check whether the user's search
+  actually matches a database field.
+*/
+function isRealMatch(report, search){
 
-out.className =
-"result red";
+  const q = normalize(search);
 
+  const fields = [
 
-out.innerHTML =
-visibleData.map(x => {
+    report.app_name,
+    report.website_url,
+    report.upi_id
 
+  ].map(normalize);
 
-const status =
-String(x.status || "")
-.trim()
-.toLowerCase();
-
-
-const isVerified =
-status === "verified" ||
-status === "verify";
-
-
-const isUnverified =
-status === "unverified";
-
-
-const title =
-isVerified
-? "🔴 VERIFIED SCAM REPORT"
-: isUnverified
-? "🟡 UNVERIFIED REPORT"
-: "⚠️ REPORT";
+  /*
+    Full phrase match first
+  */
+  if(fields.some(field => field.includes(q))){
+    return true;
+  }
 
 
-return `
+  /*
+    For multi-word searches,
+    ALL words must be present somewhere
+    in the same report.
+  */
+  const words = q
+    .split(" ")
+    .filter(Boolean);
 
-<div>
-
-<b>${title}</b>
-
-<br><br>
-
-<b>App:</b>
-${safe(x.app_name || "—")}
-
-<br>
-
-<b>Scam Type:</b>
-${safe(x.scam_type || "—")}
-
-${
-x.amount
-?
-`<br><b>Amount:</b> ₹${safe(x.amount)}`
-:
-""
-}
-
-${
-x.description
-?
-`<br><b>Description:</b> ${safe(x.description)}`
-:
-""
-}
-
-<br>
-
-<b>Status:</b>
-${safe(x.status || "—")}
-
-</div>
-
-`;
-
-}).join("<hr>");
+  if(words.length === 1){
+    return false;
+  }
 
 
-}catch(error){
+  return words.every(word =>
 
+    fields.some(field => field.includes(word))
 
-out.className =
-"result red";
-
-out.textContent =
-"❌ Error: " +
-safe(error.message);
-
-
-}
+  );
 
 }
 
 
-/* ENTER KEY SEARCH */
+async function check(){
 
-document.getElementById("q")
-.addEventListener("keydown",function(event){
+  const q =
+    document.getElementById("q").value.trim();
 
-if(event.key === "Enter"){
 
-check();
+  out.style.display = "block";
+
+
+  if(!q){
+
+    out.className = "result yellow";
+
+    out.textContent =
+      "⚠️ App / Website / UPI ID डालें।";
+
+    return;
+  }
+
+
+  out.className = "result yellow";
+
+  out.textContent =
+    "⏳ Database में checking...";
+
+
+  try{
+
+    /*
+      Database से सभी public reports पढ़ेंगे।
+      बाद में केवल VERIFIED और matching reports
+      दिखाई जाएंगी।
+    */
+
+    const url =
+      base +
+      "/rest/v1/scam_reports?select=*";
+
+
+    const response =
+      await fetch(url,{
+
+        method:"GET",
+
+        headers:{
+          "apikey":key,
+          "Authorization":"Bearer " + key
+        }
+
+      });
+
+
+    const data =
+      await response.json();
+
+
+    if(!response.ok){
+
+      throw new Error(
+        JSON.stringify(data)
+      );
+
+    }
+
+
+    /*
+      केवल VERIFIED reports
+    */
+    const verified =
+      data.filter(report => {
+
+        const status =
+          normalize(report.status);
+
+        return status === "verified" ||
+               status === "verify";
+
+      });
+
+
+    /*
+      केवल actual matching reports
+    */
+    const matches =
+      verified.filter(report =>
+        isRealMatch(report,q)
+      );
+
+
+    /*
+      कोई matching verified report नहीं
+    */
+    if(matches.length === 0){
+
+      out.className = "result green";
+
+      out.innerHTML =
+        "🟢 <b>No Verified Scam Report Found</b><br><br>" +
+        "इस search के लिए कोई verified scam report नहीं मिली।";
+
+      return;
+    }
+
+
+    /*
+      Matching verified reports दिखाएँ
+    */
+    out.className = "result red";
+
+
+    out.innerHTML =
+      matches.map(report => {
+
+        return `
+          <div class="report">
+
+            <b>🔴 VERIFIED SCAM REPORT</b>
+
+            <br><br>
+
+            <b>App:</b>
+            ${safe(report.app_name || "—")}
+
+            <br>
+
+            <b>Scam Type:</b>
+            ${safe(report.scam_type || "—")}
+
+            ${
+              report.amount
+              ? `<br><b>Amount:</b> ₹${safe(report.amount)}`
+              : ""
+            }
+
+            ${
+              report.description
+              ? `<br><b>Description:</b> ${safe(report.description)}`
+              : ""
+            }
+
+            <br>
+
+            <b>Status:</b>
+            ${safe(report.status || "verified")}
+
+          </div>
+        `;
+
+      }).join("");
+
+
+  }catch(error){
+
+    out.className = "result red";
+
+    out.innerHTML =
+      "❌ <b>Error:</b><br>" +
+      safe(error.message);
+
+  }
 
 }
 
-});
+
+/*
+  Enter दबाने पर भी search चलेगा
+*/
+document
+  .getElementById("q")
+  .addEventListener("keydown",function(event){
+
+    if(event.key === "Enter"){
+
+      check();
+
+    }
+
+  });
 
 </script>
 
 </body>
-
 </html>
