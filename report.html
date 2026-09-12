@@ -104,7 +104,6 @@ button{
 ⚠️ केवल suspicious या scam activity की सही जानकारी दें।
 </div>
 
-
 <label for="app_name">
 App Name
 </label>
@@ -115,7 +114,6 @@ App Name
   placeholder="Example: PhonePe"
   autocomplete="off"
 >
-
 
 <label for="scam_type">
 Scam Type
@@ -128,7 +126,6 @@ Scam Type
   autocomplete="off"
 >
 
-
 <label for="website_url">
 Website URL
 </label>
@@ -140,7 +137,6 @@ Website URL
   autocomplete="url"
 >
 
-
 <label for="upi_id">
 UPI ID
 </label>
@@ -151,7 +147,6 @@ UPI ID
   placeholder="example@upi"
   autocomplete="off"
 >
-
 
 <label for="amount">
 Amount
@@ -165,7 +160,6 @@ Amount
   placeholder="100"
 >
 
-
 <label for="description">
 Description
 </label>
@@ -176,18 +170,15 @@ Description
   placeholder="Scam के बारे में जानकारी लिखें"
 ></textarea>
 
-
 <button onclick="submitReport()">
 📢 Submit Scam Report
 </button>
-
 
 <div id="msg"></div>
 
 </div>
 
 </div>
-
 
 <script>
 
@@ -210,7 +201,6 @@ async function submitReport(){
   const msg =
     document.getElementById("msg");
 
-
   msg.style.display="block";
 
   msg.className="yellow";
@@ -218,10 +208,6 @@ async function submitReport(){
   msg.textContent =
     "⏳ Report submit हो रही है...";
 
-
-  /*
-    Form values
-  */
 
   const app_name =
     clean(
@@ -342,6 +328,13 @@ async function submitReport(){
 
     scam_type:
       scam_type || null,
+
+    /*
+      दोनों Website columns में URL save होगा
+    */
+
+    Website_url:
+      website_url || null,
 
     website_url:
       website_url || null,
