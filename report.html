@@ -1,479 +1,608 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="hi">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#111827">
-<title>Report Scam - Scam Guard</title>
+  <meta charset="UTF-8">
 
-<style>
-*{box-sizing:border-box}
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
-body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f7fb;
-  color:#111827;
-}
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
 
-.wrap{
-  max-width:700px;
-  margin:auto;
-  padding:18px;
-}
+  <title>Report Scam - Scam Guard</title>
 
-.card{
-  background:white;
-  padding:20px;
-  border-radius:15px;
-  margin-top:20px;
-  box-shadow:0 2px 10px #0001;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-h1{
-  text-align:center;
-}
+    body {
+      margin: 0;
+      padding: 20px;
+      background: #f5f7fb;
+      font-family: Arial, sans-serif;
+      color: #111827;
+    }
 
-label{
-  display:block;
-  font-weight:bold;
-  margin-top:10px;
-}
+    .wrap {
+      max-width: 700px;
+      margin: 0 auto;
+    }
 
-input,select,textarea{
-  width:100%;
-  padding:13px;
-  border:1px solid #ddd;
-  border-radius:10px;
-  margin:8px 0 14px;
-  font-size:16px;
-  outline:none;
-}
+    .card {
+      background: white;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
 
-button{
-  padding:13px 18px;
-  border:0;
-  border-radius:10px;
-  background:#111827;
-  color:white;
-  font-weight:bold;
-  width:100%;
-  font-size:16px;
-  cursor:pointer;
-}
+    h1 {
+      margin-top: 0;
+      text-align: center;
+      color: #111827;
+    }
 
-#msg{
-  margin-top:15px;
-  padding:12px;
-  border-radius:10px;
-  display:none;
-  line-height:1.5;
-}
+    .subtitle {
+      text-align: center;
+      color: #6b7280;
+      margin-bottom: 25px;
+    }
 
-.green{
-  background:#dcf8df;
-}
+    label {
+      display: block;
+      margin-top: 16px;
+      margin-bottom: 7px;
+      font-weight: bold;
+    }
 
-.red{
-  background:#ffe0e0;
-}
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      font-size: 16px;
+      outline: none;
+      background: white;
+    }
 
-.yellow{
-  background:#fff0b8;
-}
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: #2563eb;
+    }
 
-.note{
-  background:#f3f4f6;
-  padding:12px;
-  border-radius:10px;
-  margin-bottom:15px;
-  font-size:14px;
-}
-</style>
+    textarea {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 22px;
+      padding: 14px;
+      border: 0;
+      border-radius: 10px;
+      background: #111827;
+      color: white;
+      font-size: 17px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    #msg {
+      margin-top: 18px;
+      padding: 12px;
+      border-radius: 10px;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .success {
+      display: block !important;
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    .error {
+      display: block !important;
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .info {
+      display: block !important;
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .note {
+      margin-top: 18px;
+      padding: 12px;
+      background: #f3f4f6;
+      border-radius: 10px;
+      color: #4b5563;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="wrap">
+  <div class="wrap">
 
-<div class="card">
+    <div class="card">
 
-<h1>🛡️ Report a Scam</h1>
+      <h1>🚨 Report a Scam</h1>
 
-<div class="note">
-⚠️ केवल suspicious या scam activity की सही जानकारी दें।
-</div>
+      <div class="subtitle">
+        Scam Guard पर scam की जानकारी submit करें
+      </div>
 
-<label for="app_name">
-App Name
-</label>
+      <form id="reportForm">
 
-<input
-  id="app_name"
-  type="text"
-  placeholder="Example: PhonePe"
-  autocomplete="off"
->
+        <label for="app_name">
+          App Name
+        </label>
 
-<label for="scam_type">
-Scam Type
-</label>
-
-<input
-  id="scam_type"
-  type="text"
-  placeholder="Example: Fake Payment"
-  autocomplete="off"
->
-
-<label for="website_url">
-Website URL
-</label>
-
-<input
-  id="website_url"
-  type="url"
-  placeholder="https://example.com"
-  autocomplete="url"
->
-
-<label for="upi_id">
-UPI ID
-</label>
-
-<input
-  id="upi_id"
-  type="text"
-  placeholder="example@upi"
-  autocomplete="off"
->
-
-<label for="amount">
-Amount
-</label>
-
-<input
-  id="amount"
-  type="number"
-  min="0"
-  step="0.01"
-  placeholder="100"
->
-
-<label for="description">
-Description
-</label>
-
-<textarea
-  id="description"
-  rows="5"
-  placeholder="Scam के बारे में जानकारी लिखें"
-></textarea>
-
-<button onclick="submitReport()">
-📢 Submit Scam Report
-</button>
-
-<div id="msg"></div>
-
-</div>
-
-</div>
-
-<script>
-
-const base =
-"https://zdsvmqtfzprlfsggdepd.supabase.co";
-
-const key =
-"sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
+        <input
+          id="app_name"
+          type="text"
+          placeholder="Example: PhonePe"
+        >
 
 
-function clean(value){
+        <label for="scam_type">
+          Scam Type
+        </label>
 
-  return String(value || "").trim();
+        <select id="scam_type">
 
-}
+          <option value="">
+            Select Scam Type
+          </option>
 
+          <option value="UPI Scam">
+            UPI Scam
+          </option>
 
-async function submitReport(){
+          <option value="Website Scam">
+            Website Scam
+          </option>
 
-  const msg =
-    document.getElementById("msg");
+          <option value="Payment Scam">
+            Payment Scam
+          </option>
 
-  msg.style.display="block";
+          <option value="Investment Scam">
+            Investment Scam
+          </option>
 
-  msg.className="yellow";
+          <option value="Job Scam">
+            Job Scam
+          </option>
 
-  msg.textContent =
-    "⏳ Report submit हो रही है...";
+          <option value="Shopping Scam">
+            Shopping Scam
+          </option>
 
+          <option value="Other">
+            Other
+          </option>
 
-  const app_name =
-    clean(
-      document.getElementById("app_name").value
-    );
-
-
-  const scam_type =
-    clean(
-      document.getElementById("scam_type").value
-    );
-
-
-  const website_url =
-    clean(
-      document.getElementById("website_url").value
-    );
-
-
-  const upi_id =
-    clean(
-      document.getElementById("upi_id").value
-    );
+        </select>
 
 
-  const amountValue =
-    clean(
-      document.getElementById("amount").value
-    );
+        <label for="website_url">
+          Website URL
+        </label>
+
+        <input
+          id="website_url"
+          type="url"
+          placeholder="https://example.com"
+          autocomplete="url"
+        >
 
 
-  const description =
-    clean(
-      document.getElementById("description").value
-    );
+        <label for="upi_id">
+          UPI ID
+        </label>
+
+        <input
+          id="upi_id"
+          type="text"
+          placeholder="example@upi"
+        >
 
 
-  /*
-    कम से कम App / Website / UPI
-  */
+        <label for="amount">
+          Amount
+        </label>
 
-  if(
-    !app_name &&
-    !website_url &&
-    !upi_id
-  ){
-
-    msg.className="red";
-
-    msg.textContent =
-      "⚠️ App Name, Website या UPI ID में से कम से कम एक भरें।";
-
-    return;
-
-  }
+        <input
+          id="amount"
+          type="number"
+          placeholder="Example: 5000"
+          min="0"
+          step="0.01"
+        >
 
 
-  /*
-    Website URL validation
-  */
+        <label for="description">
+          Description
+        </label>
 
-  if(website_url){
+        <textarea
+          id="description"
+          placeholder="Scam के बारे में पूरी जानकारी लिखें..."
+        ></textarea>
 
-    try{
 
-      new URL(website_url);
+        <button
+          id="submitBtn"
+          type="submit"
+        >
+          📢 Submit Scam Report
+        </button>
 
-    }catch(e){
+      </form>
 
-      msg.className="red";
 
-      msg.textContent =
-        "⚠️ Website URL सही format में डालें। Example: https://example.com";
+      <div id="msg"></div>
 
-      return;
 
+      <div class="note">
+        ⚠️ Report submit होने के बाद status
+        <b>Unverified</b> रहेगा।
+        Admin verification के बाद report public checker में दिखाई देगी।
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <script>
+
+    // ================================
+    // SUPABASE CONFIG
+    // ================================
+
+    const base =
+      "https://zdsvmqtfzprlfsggdepd.supabase.co";
+
+    const key =
+      "sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
+
+
+    // ================================
+    // HELPER
+    // ================================
+
+    function clean(value) {
+      return String(value || "").trim();
     }
 
-  }
+
+    // ================================
+    // FORM SUBMIT
+    // ================================
+
+    document
+      .getElementById("reportForm")
+      .addEventListener("submit", async function(event) {
+
+        event.preventDefault();
 
 
-  /*
-    Amount
-  */
+        const msg =
+          document.getElementById("msg");
 
-  let amount = null;
-
-  if(amountValue){
-
-    amount =
-      Number(amountValue);
-
-    if(
-      !Number.isFinite(amount) ||
-      amount < 0
-    ){
-
-      msg.className="red";
-
-      msg.textContent =
-        "⚠️ Amount सही डालें।";
-
-      return;
-
-    }
-
-  }
+        const submitBtn =
+          document.getElementById("submitBtn");
 
 
-  /*
-    Data तैयार करना
-  */
+        // ----------------------------
+        // GET FORM VALUES
+        // ----------------------------
 
-  const report = {
-
-    app_name:
-      app_name || null,
-
-    scam_type:
-      scam_type || null,
-
-    /*
-      दोनों Website columns में URL save होगा
-    */
-
-    Website_url:
-      website_url || null,
-
-    website_url:
-      website_url || null,
-
-    upi_id:
-      upi_id || null,
-
-    amount:
-      amount,
-
-    description:
-      description || null,
-
-    status:
-      "unverified"
-
-  };
+        const app_name =
+          clean(
+            document.getElementById("app_name").value
+          );
 
 
-  console.log(
-    "Submitting report:",
-    report
-  );
+        const scam_type =
+          clean(
+            document.getElementById("scam_type").value
+          );
 
 
-  try{
+        const website_url =
+          clean(
+            document.getElementById("website_url").value
+          );
 
-    const response =
-      await fetch(
-        base + "/rest/v1/scam_reports",
-        {
-          method:"POST",
 
-          headers:{
+        // ============================
+        // TEMPORARY DEBUG
+        // ============================
 
-            "apikey":key,
+        alert(
+          "Captured URL = [" +
+          website_url +
+          "]"
+        );
 
-            "Authorization":
-              "Bearer " + key,
 
-            "Content-Type":
-              "application/json",
+        const upi_id =
+          clean(
+            document.getElementById("upi_id").value
+          );
 
-            "Prefer":
-              "return=representation"
 
-          },
+        const amountValue =
+          clean(
+            document.getElementById("amount").value
+          );
 
-          body:
-            JSON.stringify(report)
+
+        const description =
+          clean(
+            document.getElementById("description").value
+          );
+
+
+        // ----------------------------
+        // VALIDATION
+        // ----------------------------
+
+        if (
+          !app_name &&
+          !website_url &&
+          !upi_id
+        ) {
+
+          msg.className = "error";
+
+          msg.textContent =
+            "❌ App Name, Website URL या UPI ID में से कम से कम एक भरें।";
+
+          return;
+        }
+
+
+        // ----------------------------
+        // WEBSITE URL VALIDATION
+        // ----------------------------
+
+        if (website_url) {
+
+          try {
+
+            new URL(website_url);
+
+          } catch (error) {
+
+            msg.className = "error";
+
+            msg.textContent =
+              "❌ कृपया सही Website URL डालें। Example: https://example.com";
+
+            return;
+          }
 
         }
-      );
 
 
-    const data =
-      await response.json();
+        // ----------------------------
+        // AMOUNT
+        // ----------------------------
+
+        let amount = null;
+
+        if (amountValue !== "") {
+
+          const numberAmount =
+            Number(amountValue);
+
+          if (
+            Number.isNaN(numberAmount) ||
+            numberAmount < 0
+          ) {
+
+            msg.className = "error";
+
+            msg.textContent =
+              "❌ कृपया सही Amount डालें।";
+
+            return;
+          }
+
+          amount = numberAmount;
+        }
 
 
-    console.log(
-      "Supabase response:",
-      data
-    );
+        // ----------------------------
+        // REPORT OBJECT
+        // ----------------------------
+
+        const report = {
+
+          app_name:
+            app_name || null,
+
+          scam_type:
+            scam_type || null,
+
+          // Capital W column
+          Website_url:
+            website_url || null,
+
+          // Small w column
+          website_url:
+            website_url || null,
+
+          upi_id:
+            upi_id || null,
+
+          amount:
+            amount,
+
+          description:
+            description || null,
+
+          status:
+            "unverified"
+        };
 
 
-    if(!response.ok){
+        // ----------------------------
+        // SHOW SUBMITTING
+        // ----------------------------
 
-      throw new Error(
-        JSON.stringify(data)
-      );
+        msg.className = "info";
 
-    }
+        msg.textContent =
+          "⏳ Report submit हो रही है...";
 
-
-    /*
-      Success
-    */
-
-    msg.className="green";
-
-    msg.innerHTML =
-      "✅ <b>Report successfully submit हो गई।</b><br>" +
-      "Status: Unverified<br><br>" +
-      "Admin verification के बाद यह report public checker में दिखाई देगी।";
+        submitBtn.disabled = true;
 
 
-    /*
-      Form clear
-    */
+        try {
 
-    document.getElementById(
-      "app_name"
-    ).value="";
+          // --------------------------
+          // SEND TO SUPABASE
+          // --------------------------
 
+          const response =
+            await fetch(
+              base + "/rest/v1/scam_reports",
+              {
+                method: "POST",
 
-    document.getElementById(
-      "scam_type"
-    ).value="";
+                headers: {
 
+                  "apikey": key,
 
-    document.getElementById(
-      "website_url"
-    ).value="";
+                  "Authorization":
+                    "Bearer " + key,
 
+                  "Content-Type":
+                    "application/json",
 
-    document.getElementById(
-      "upi_id"
-    ).value="";
+                  "Prefer":
+                    "return=representation"
+                },
 
-
-    document.getElementById(
-      "amount"
-    ).value="";
-
-
-    document.getElementById(
-      "description"
-    ).value="";
+                body:
+                  JSON.stringify(report)
+              }
+            );
 
 
-  }catch(error){
+          // --------------------------
+          // ERROR
+          // --------------------------
 
-    console.error(
-      "Submit error:",
-      error
-    );
+          if (!response.ok) {
+
+            const errorText =
+              await response.text();
+
+            throw new Error(
+              errorText ||
+              "Supabase request failed"
+            );
+          }
 
 
-    msg.className="red";
+          // --------------------------
+          // SUCCESS
+          // --------------------------
 
-    msg.innerHTML =
-      "❌ <b>Report submit नहीं हुई।</b><br><br>" +
-      clean(error.message);
+          const result =
+            await response.json();
 
-  }
+          console.log(
+            "Supabase response:",
+            result
+          );
 
-}
 
-</script>
+          msg.className = "success";
+
+          msg.innerHTML =
+            "✅ Report successfully submit हो गई.<br>" +
+            "<b>Status:</b> Unverified<br>" +
+            "Admin verification के बाद यह report public checker में दिखाई देगी.";
+
+
+          // --------------------------
+          // CLEAR FORM
+          // --------------------------
+
+          document
+            .getElementById("app_name")
+            .value = "";
+
+          document
+            .getElementById("scam_type")
+            .value = "";
+
+          document
+            .getElementById("website_url")
+            .value = "";
+
+          document
+            .getElementById("upi_id")
+            .value = "";
+
+          document
+            .getElementById("amount")
+            .value = "";
+
+          document
+            .getElementById("description")
+            .value = "";
+
+
+        } catch (error) {
+
+          console.error(
+            "Submit error:",
+            error
+          );
+
+
+          msg.className = "error";
+
+          msg.innerHTML =
+            "❌ Report submit नहीं हो पाई।<br><br>" +
+            "<b>Error:</b> " +
+            error.message;
+
+        } finally {
+
+          submitBtn.disabled = false;
+
+        }
+
+      });
+
+  </script>
 
 </body>
 </html>
