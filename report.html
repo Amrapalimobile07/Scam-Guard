@@ -109,8 +109,9 @@
   <div class="container">
 
     <h1>🛡️ Report a Scam</h1>
-
-    <form id="reportForm" onsubmit="alert(typeof submitReport); return false;">
+async function submitReport(event) {
+  alert("SUBMIT FUNCTION WORKING");
+    <form id="reportForm" onsubmit="submitReport(event)">
 
       <label for="app_name">App Name</label>
 
