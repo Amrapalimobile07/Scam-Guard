@@ -112,7 +112,7 @@
 async function submitReport(event) {
   alert("SUBMIT FUNCTION WORKING");
     <form id="reportForm" onsubmit="submitReport(event)">
-
+     event.preventDefault();
       <label for="app_name">App Name</label>
 
       <input
