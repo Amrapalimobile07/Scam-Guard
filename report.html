@@ -112,27 +112,60 @@ button:disabled {
 <form id="reportForm" onsubmit="submitReport(event)">
 
 <label for="app_name">App Name</label>
+
 <input
   type="text"
   id="app_name"
   placeholder="उदा. PhonePe"
 >
 
+
 <label for="scam_type">Scam Type</label>
 
 <select id="scam_type">
-  <option value="">Select Scam Type</option>
-  <option value="UPI Scam">UPI Scam</option>
-  <option value="Website Scam">Website Scam</option>
-  <option value="Investment Scam">Investment Scam</option>
-  <option value="Job Scam">Job Scam</option>
-  <option value="Loan Scam">Loan Scam</option>
-  <option value="Shopping Scam">Shopping Scam</option>
-  <option value="Fake App">Fake App</option>
-  <option value="Other">Other</option>
+
+  <option value="">
+    Select Scam Type
+  </option>
+
+  <option value="UPI Scam">
+    UPI Scam
+  </option>
+
+  <option value="Website Scam">
+    Website Scam
+  </option>
+
+  <option value="Investment Scam">
+    Investment Scam
+  </option>
+
+  <option value="Job Scam">
+    Job Scam
+  </option>
+
+  <option value="Loan Scam">
+    Loan Scam
+  </option>
+
+  <option value="Shopping Scam">
+    Shopping Scam
+  </option>
+
+  <option value="Fake App">
+    Fake App
+  </option>
+
+  <option value="Other">
+    Other
+  </option>
+
 </select>
 
-<label for="website_url">Website URL</label>
+
+<label for="website_url">
+  Website URL
+</label>
 
 <input
   type="url"
@@ -144,7 +177,10 @@ button:disabled {
 अगर scam website है तो उसका पूरा URL डालें।
 </div>
 
-<label for="upi_id">UPI ID</label>
+
+<label for="upi_id">
+  UPI ID
+</label>
 
 <input
   type="text"
@@ -152,7 +188,10 @@ button:disabled {
   placeholder="example@upi"
 >
 
-<label for="amount">Amount</label>
+
+<label for="amount">
+  Amount
+</label>
 
 <input
   type="number"
@@ -162,12 +201,16 @@ button:disabled {
   step="0.01"
 >
 
-<label for="description">Description</label>
+
+<label for="description">
+  Description
+</label>
 
 <textarea
   id="description"
   placeholder="Scam के बारे में पूरी जानकारी लिखें..."
 ></textarea>
+
 
 <button
   type="submit"
@@ -177,6 +220,7 @@ button:disabled {
 </button>
 
 </form>
+
 
 <div id="msg"></div>
 
@@ -188,12 +232,15 @@ button:disabled {
 const base =
 "https://zdsvmqtfzprlfsggdepd.supabase.co";
 
+
 const key =
 "sb_publishable_ipHcSbMphfOBKG-ijTJDfQ_CSi-ZZZ4";
 
 
 function clean(value) {
+
   return String(value || "").trim();
+
 }
 
 
@@ -203,27 +250,30 @@ function showMessage(message, type) {
     document.getElementById("msg");
 
   msg.className = type;
+
   msg.innerHTML = message;
+
   msg.style.display = "block";
 
   window.scrollTo({
+
     top: document.body.scrollHeight,
+
     behavior: "smooth"
+
   });
+
 }
 
 
 async function submitReport(event) {
 
-  alert("SUBMIT FUNCTION WORKING");
-
   event.preventDefault();
-
-  alert("TRY START");
 
 
   const submitBtn =
     document.getElementById("submitBtn");
+
 
   submitBtn.disabled = true;
 
@@ -232,8 +282,6 @@ async function submitReport(event) {
 
 
   try {
-
-    alert("TRY BLOCK WORKING");
 
 
     const app_name =
@@ -272,5 +320,202 @@ async function submitReport(event) {
       );
 
 
-    alert(
-      "DATA CAPTURED
+    if (
+      !app_name &&
+      !website_url &&
+      !upi_id
+    ) {
+
+      throw new Error(
+        "कम से कम App Name, Website URL या UPI ID में से एक भरें।"
+      );
+
+    }
+
+
+    if (website_url) {
+
+      try {
+
+        new URL(website_url);
+
+      } catch {
+
+        throw new Error(
+          "Website URL सही नहीं है। उदाहरण: https://example.com"
+        );
+
+      }
+
+    }
+
+
+    let amount = null;
+
+
+    if (amountValue !== "") {
+
+      amount = Number(amountValue);
+
+
+      if (
+        !Number.isFinite(amount) ||
+        amount < 0
+      ) {
+
+        throw new Error(
+          "Amount सही नहीं है।"
+        );
+
+      }
+
+    }
+
+
+    const report = {
+
+      app_name:
+        app_name || null,
+
+      scam_type:
+        scam_type || null,
+
+      Website_url:
+        website_url || null,
+
+      website_url:
+        website_url || null,
+
+      upi_id:
+        upi_id || null,
+
+      amount:
+        amount,
+
+      description:
+        description || null,
+
+      status:
+        "unverified"
+
+    };
+
+
+    const response =
+      await fetch(
+
+        base +
+        "/rest/v1/scam_reports",
+
+        {
+
+          method: "POST",
+
+          headers: {
+
+            "apikey": key,
+
+            "Authorization":
+              "Bearer " + key,
+
+            "Content-Type":
+              "application/json",
+
+            "Prefer":
+              "return=representation"
+
+          },
+
+          body:
+            JSON.stringify(report)
+
+        }
+
+      );
+
+
+    const responseText =
+      await response.text();
+
+
+    if (!response.ok) {
+
+      throw new Error(
+        "Supabase Error: " +
+        responseText
+      );
+
+    }
+
+
+    showMessage(
+
+      "✅ Scam Report Successfully Submitted!" +
+
+      "<br><br>" +
+
+      "Status: <b>Unverified</b>" +
+
+      "<br><br>" +
+
+      "Website URL: " +
+      (website_url || "Not provided") +
+
+      "<br>" +
+
+      "UPI ID: " +
+      (upi_id || "Not provided") +
+
+      "<br><br>" +
+
+      "Report admin verification के बाद public checker में दिखाई देगा.",
+
+      "success"
+
+    );
+
+
+    document
+      .getElementById("reportForm")
+      .reset();
+
+
+  }
+
+
+  catch (error) {
+
+
+    showMessage(
+
+      "❌ Report submit नहीं हुआ." +
+
+      "<br><br>" +
+
+      "<b>Error:</b> " +
+
+      clean(error.message),
+
+      "error"
+
+    );
+
+  }
+
+
+  finally {
+
+
+    submitBtn.disabled = false;
+
+    submitBtn.innerText =
+      "📢 Submit Scam Report";
+
+  }
+
+}
+
+</script>
+
+</body>
+</html>
